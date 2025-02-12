@@ -1,10 +1,15 @@
-
+import 'package:ability_drive_flutter/providers/home_provider.dart';
 import 'package:ability_drive_flutter/screens/payment_Method_page.dart';
 import 'package:ability_drive_flutter/screens/private_Book.dart';
 import 'package:ability_drive_flutter/screens/profile_page.dart';
+import 'package:ability_drive_flutter/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
+  final TextEditingController pickupController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +23,6 @@ class Homepage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.menu, color: Colors.white),
               onPressed: () {
-                // الانتقال إلى صفحة البروفايل عند الضغط على الأيقونة
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => profile()),
@@ -28,130 +32,169 @@ class Homepage extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // القسم العلوي: الإشعار
-          Container(
-            color: const Color(0xFF5B6EF8),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'To find your pickup location automatically, turn on location services',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+      body: Consumer<HomeProvider>(
+        builder: (context, homeProvider, child) {
+          return SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: const Color(0xFF5B6EF8),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'To find your pickup location automatically, turn on location services',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text('Turn on location'),
+                        ),
+                      ],
                     ),
                   ),
-                  child: const Text('Turn on location'),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          // القسم الثاني: اختيار الموقع
-          Expanded(
-            child: Container(
-              color: const Color(0xFF1A3A42),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // التنقل إلى صفحة البروفايل عند الضغط على الأيقونة أو النص
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PrivateBook()),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          const Icon(Icons.directions_car,
-                              size: 50, color: Colors.white),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Book a Private ride',
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PrivateBook()),
+                            );
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(Icons.directions_car, size: 50, color: Colors.white),
+                              SizedBox(height: 8),
+                              Text(
+                                'Book a Private ride',
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextField(
+                          controller: pickupController,
+                          hintText: 'Enter pickup point',
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Pickup point is required';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context.read<HomeProvider>().fetchData(pickupController.text);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Confirm Pickup',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Available Buses',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.black,
-                        hintText: 'Enter pickup point',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
                         ),
-                      ),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 16),
-                    // القسم الثالث: المعلومات المحيطة
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Around you',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.directions_car, size: 50),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text('From:'),
-                                  Text('To:'),
-                                  Text('Price:'),
-                                  Text('Departure Time:'),
-                                  Text('Arrival Time:'),
-                                ],
-                              ),
+                        const SizedBox(height: 16),
+                        if (homeProvider.isLoading)
+                          const Center(child: CircularProgressIndicator())
+                        else if (homeProvider.filteredBuses.isEmpty)
+                          const Center(
+                            child: Text(
+                              "No buses available for this location",
+                              style: TextStyle(color: Colors.white, fontSize: 16),
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PaymentMethod()),
-                                );
-                              },
-                              child: const Text('Book'),
-                            ),
-                          ],
-                        ),
-                      ),
+                          )
+                        else
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: homeProvider.filteredBuses.length,
+                            itemBuilder: (context, index) {
+                              final bus = homeProvider.filteredBuses[index];
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.directions_bus, size: 50),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Bus Number: ${bus[index]["busNumber"]}',
+                                                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                Text('From: ${bus[index]["fromLocation"]}'),
+                                                Text('To: ${bus[index]["toLocation"]}'),
+                                                Text('Departure: ${bus[index]["departureTime"]}'),
+                                                Text('Available Seats: ${bus[index]["availableNormalSeats"]}'),
+                                                Text(
+                                                    'Wheelchair Accessible: ${bus[index]["isWheelchairAccessible"] ? "Yes" : "No"}'),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => PaymentMethod()),
+                                          );
+                                        },
+                                        child: const Text('Book'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
