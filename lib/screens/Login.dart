@@ -1,6 +1,8 @@
+import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ability_drive_flutter/screens/signup_page.dart';
 import '../widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 import 'Home_page.dart';
 import 'Reset_password/reset_pass_page.dart';
 
@@ -9,6 +11,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AuthProvider>(context, listen: false);
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final TextEditingController _phoneController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
@@ -72,10 +75,14 @@ class LoginPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
-                      );
+                      provider.logIn(phone: _phoneController.text.trim(), password: _passwordController.text.trim());
+                      if(provider.loginStatus!){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Homepage()),
+                        );
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                     }
                   },
                   child: const Text('Login',

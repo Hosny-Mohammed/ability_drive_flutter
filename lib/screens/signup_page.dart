@@ -180,11 +180,11 @@ class RegistrationScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(builder: (context) => Homepage()),
                           );
-                        } else {
+                        }
                           ScaffoldMessenger.of(context).showSnackBar(
                             provider.registrationSnackbar ?? const SnackBar(content: Text('An error occurred')),
                           );
-                        }
+
                       }
                     },
                     child: const Text(

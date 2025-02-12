@@ -6,7 +6,7 @@ import '../models/user_model.dart';
 class AuthService {
   static Dio dio = Dio();
 
-  static Future<UserModel> registration({required String phone, required String email, required String firstName, required String lastName, required String password, required bool isDisabled})async{
+  static Future<UserModel?> registration({required String phone, required String email, required String firstName, required String lastName, required String password, required bool isDisabled})async{
     try{
       Map credential = {
         "firstName": firstName,
@@ -17,35 +17,37 @@ class AuthService {
         "isDisabled":isDisabled
       };
 
-      Response response = await dio.post('https://localhost:7249/api/User/register', data: credential);
+      Response response = await dio.post('https://abilitydrive.runasp.net/api/User/register', data: credential);
 
       if(response.statusCode == 200){
         var model = UserModel.getJson(response.data);
         if(model.status){
           return model;
         }
-        throw("Couldn't Sign Up");
+        return null;
       }
-      throw("Couldn't Sign Up");
+      return null;
     }catch(ex){
-      throw('Error:$ex');
+      print('Error:$ex');
+      return null;
     }
   }
 
-  static Future<int> logIn({required String phone, required String password})async{
+  static Future<int?> logIn({required String phone, required String password})async{
     try{
       Map credential = {
         "phoneNumber": phone,
         "password": password
       };
-      Response response = await dio.post('https://localhost:7249/api/User/login', data: credential);
+      Response response = await dio.post('https://abilitydrive.runasp.net/api/User/login', data: credential);
 
       if(response.statusCode == 200 && response.data['status']){
         return response.data['userId'];
       }
-      throw("Couldn't login");
+      return null;
     }catch(ex){
-      throw('Error:$ex');
+      print('Error:$ex');
+      return null;
     }
   }
 }
