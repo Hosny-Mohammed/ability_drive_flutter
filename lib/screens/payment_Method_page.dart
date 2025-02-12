@@ -56,7 +56,7 @@ class _PaymentScreenState extends State<PaymentMethod> {
                     ? () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Homepage()),
+                          MaterialPageRoute(builder: (context) => Homepage(userId: 1,)),
                         );
                       }
                     : null,

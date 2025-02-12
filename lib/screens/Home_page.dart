@@ -7,11 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
+  int userId;
   final TextEditingController pickupController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  Homepage({required this.userId});
+
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<HomeProvider>((context), listen: false);
     return Scaffold(
       backgroundColor: const Color(0xFF1A3A42),
       appBar: AppBar(
@@ -147,44 +151,64 @@ class Homepage extends StatelessWidget {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                                  child: Consumer<HomeProvider>(
+                                    builder: (context, homeProvider, child) {
+                                      final bus = homeProvider.filteredBuses[index];
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          const Icon(Icons.directions_bus, size: 50),
-                                          const SizedBox(width: 16),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text('Bus Number: ${bus[index]["busNumber"]}',
-                                                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                Text('From: ${bus[index]["fromLocation"]}'),
-                                                Text('To: ${bus[index]["toLocation"]}'),
-                                                Text('Departure: ${bus[index]["departureTime"]}'),
-                                                Text('Available Seats: ${bus[index]["availableNormalSeats"]}'),
-                                                Text(
-                                                    'Wheelchair Accessible: ${bus[index]["isWheelchairAccessible"] ? "Yes" : "No"}'),
-                                              ],
-                                            ),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.directions_bus, size: 50),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Bus Number: ${bus["busNumber"]}',
+                                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                                    ),
+                                                    Text('From: ${bus["fromLocation"]}'),
+                                                    Text('To: ${bus["toLocation"]}'),
+                                                    Text('Departure: ${bus["departureTime"]}'),
+                                                    Text('Available Seats: ${bus["availableNormalSeats"]}'),
+                                                    Text(
+                                                        'Available Seats For Disabled: ${bus["availableDisabledSeats"]}'),
+                                                    Text(
+                                                        'Wheelchair Accessible: ${bus["isWheelchairAccessible"] ? "Yes" : "No"}'),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              // Trigger booking and data refresh
+                                              await homeProvider.bookRide(
+                                                userId: userId,
+                                                busScheduleId: bus['id'],
+                                              );
+
+                                              // Fetch the latest data to reflect changes
+                                              homeProvider.fetchData(pickupController.text);
+
+                                              // Display booking result
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(homeProvider.bookingSnack!);
+
+
+                                            },
+                                            child: const Text('Book'),
                                           ),
                                         ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => PaymentMethod()),
-                                          );
-                                        },
-                                        child: const Text('Book'),
-                                      ),
-                                    ],
+                                      );
+                                    },
                                   ),
                                 ),
-                              );
+                              )
+                              ;
                             },
                           ),
                       ],

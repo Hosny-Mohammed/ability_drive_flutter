@@ -73,16 +73,26 @@ class LoginPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      provider.logIn(phone: _phoneController.text.trim(), password: _passwordController.text.trim());
-                      if(provider.loginStatus!){
+                      // Call the login method and wait for it to complete
+                      await provider.logIn(
+                        phone: _phoneController.text.trim(),
+                        password: _passwordController.text.trim(),
+                      );
+
+                      // Check the login status after the logIn method has completed
+                      if (provider.loginStatus!) {
+                        // Navigate to the homepage if login is successful
+                        // Show the snackbar if login fails
+                        ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Homepage()),
+                          MaterialPageRoute(
+                            builder: (context) => Homepage(userId: provider.userId!),
+                          ),
                         );
                       }
-                      ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                     }
                   },
                   child: const Text('Login',

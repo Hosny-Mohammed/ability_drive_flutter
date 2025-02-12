@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/user_model.dart';
 
@@ -28,7 +29,9 @@ class AuthService {
       }
       return null;
     }catch(ex){
-      print('Error:$ex');
+      if (kDebugMode) {
+        print('Error:$ex');
+      }
       return null;
     }
   }
@@ -46,7 +49,9 @@ class AuthService {
       }
       return null;
     }catch(ex){
-      print('Error:$ex');
+      if (kDebugMode) {
+        print('Error:$ex');
+      }
       return null;
     }
   }

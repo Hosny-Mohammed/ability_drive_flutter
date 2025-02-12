@@ -163,9 +163,10 @@ class RegistrationScreen extends StatelessWidget {
                       backgroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        provider.registration(
+                        // Call the registration method and wait for it to complete
+                        await provider.registration(
                           email: _emailController.text.trim(),
                           firstName: _firstNameController.text.trim(),
                           lastName: _lastNameController.text.trim(),
@@ -174,19 +175,22 @@ class RegistrationScreen extends StatelessWidget {
                           isDisabled: isDisabled.value,
                         );
 
-                        // Safely check registrationStatus
+                        // Check the registration status after the registration method has completed
                         if (provider.registrationStatus != null && provider.registrationStatus!) {
+                          // Navigate to the homepage if registration is successful
+                          // Show the snackbar if registration fails
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              provider.registrationSnackbar!);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Homepage()),
+                            MaterialPageRoute(
+                              builder: (context) => Homepage(userId: provider.model!.id),
+                            ),
                           );
                         }
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            provider.registrationSnackbar ?? const SnackBar(content: Text('An error occurred')),
-                          );
-
                       }
                     },
+
                     child: const Text(
                       'Next',
                       style: TextStyle(color: Colors.white, fontSize: 16),
