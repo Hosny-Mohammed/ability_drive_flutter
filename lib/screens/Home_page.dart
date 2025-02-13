@@ -198,7 +198,7 @@ class Homepage extends StatelessWidget {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(homeProvider.bookingSnack!);
 
-
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentMethod()));
                                             },
                                             child: const Text('Book'),
                                           ),

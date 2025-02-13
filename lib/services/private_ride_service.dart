@@ -5,26 +5,40 @@ import '../models/driver_profile_model.dart';
 
 class PrivateRideService{
   static Dio dio = Dio();
-  
-  static Future<List<dynamic>?> fetchData() async{
-    try{
-      Response response = await dio.get('https://abilitydrive.runasp.net/api/driver/available-drivers');
-      if(response.statusCode == 200){
+
+  static Future<List<dynamic>?> fetchData({required String preferredLocation,required String lastKnownLocation}) async {
+    try {
+      // Construct query parameters
+      Map<String, String> queryParams = {};
+      if (preferredLocation != null && preferredLocation.isNotEmpty) {
+        queryParams['preferredLocation'] = preferredLocation;
+      }
+      if (lastKnownLocation != null && lastKnownLocation.isNotEmpty) {
+        queryParams['lastKnownLocation'] = lastKnownLocation;
+      }
+
+      // Make API request with query parameters
+      Response response = await dio.get(
+        'https://abilitydrive.runasp.net/api/driver/available-drivers',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode == 200) {
         var model = DriverProfileModel.getJson(response.data);
-        if(model.status){
+        if (model.status) {
           return model.data;
         }
         return null;
       }
       return null;
-    }catch(ex){
+    } catch (ex) {
       if (kDebugMode) {
-        print('Error;$ex');
+        print('Error: $ex');
       }
       return null;
     }
-
   }
+
 
   static Future<double> bookRide({required int userId,required int driverId,required String pickupLocation,required String destination}) async{
     try{

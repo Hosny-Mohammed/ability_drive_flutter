@@ -7,6 +7,7 @@ class DriverCard extends StatelessWidget {
   final String lastKnownLocation;
   final String phoneNumber;
   final double rating;
+  final List<String> preferredLocations; // Handled null case
   final VoidCallback onBookPressed;
 
   const DriverCard({
@@ -17,8 +18,10 @@ class DriverCard extends StatelessWidget {
     required this.lastKnownLocation,
     required this.phoneNumber,
     required this.rating,
+    required List<String>? preferredLocations, // Accept null
     required this.onBookPressed,
-  }) : super(key: key);
+  })  : preferredLocations = preferredLocations ?? const [], // Default to empty list
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class DriverCard extends StatelessWidget {
                       backgroundColor: Colors.blueAccent,
                       radius: 30,
                       child: Text(
-                        name[0], // Show the first letter of the name
+                        name.isNotEmpty ? name[0] : '?', // Handle empty name
                         style: const TextStyle(color: Colors.white, fontSize: 24),
                       ),
                     ),
@@ -70,35 +73,59 @@ class DriverCard extends StatelessWidget {
                             color: isAvailable ? Colors.green : Colors.red,
                           ),
                         ),
-                          Text(
-                            'Last Location: $lastKnownLocation',
-                            style: const TextStyle(fontSize: 14),
-                          ),
+                        Text(
+                          'Last Location: $lastKnownLocation',
+                          style: const TextStyle(fontSize: 14),
+                        ),
                       ],
                     ),
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: List.generate(5, (index) {
-                        return Icon(
-                          index < rating.floor()
-                              ? Icons.star
-                              : Icons.star_border,
-                          color: Colors.orangeAccent,
-                        );
-                      }),
-                    ),
-                    Text(
-                      rating.toStringAsFixed(1),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              ],
+            ),
+            const SizedBox(height: 10),
+            if (preferredLocations.isNotEmpty) ...[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  'Preferred Locations:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Wrap(
+                spacing: 6,
+                children: preferredLocations.map((location) {
+                  return Chip(
+                    label: Text(location),
+                    backgroundColor: Colors.blue[100],
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 10),
+            ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) {
+                    return Icon(
+                      index < rating.floor()
+                          ? Icons.star
+                          : Icons.star_border,
+                      color: Colors.orangeAccent,
+                    );
+                  }),
+                ),
+                Text(
+                  rating.toStringAsFixed(1),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
