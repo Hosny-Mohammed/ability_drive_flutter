@@ -1,5 +1,6 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/providers/home_provider.dart';
+import 'package:ability_drive_flutter/providers/private_ride_provider.dart';
 import 'package:ability_drive_flutter/screens/Welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => HomeProvider())
+        ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => DriversProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // Removes the debug banner
