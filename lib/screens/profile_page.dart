@@ -1,14 +1,24 @@
-
 import 'package:ability_drive_flutter/screens/payment_information_page.dart';
 import 'package:flutter/material.dart';
 
-import 'Account_settings.dart';
+class Profile extends StatelessWidget {
+  final Map<String, dynamic> user = {
+    "id": 2,
+    "firstName": "hosny",
+    "lastName": "mohammed",
+    "phoneNumber": "01149871367",
+    "email": "hosny@gmail.com",
+    "isDisabled": false,
+    "password": "pass#123",
+    "createdAt": "2025-02-12T20:34:44.5533846",
+  };
 
-class profile extends StatelessWidget {
+  Profile();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3A42), //
+      backgroundColor: const Color(0xFF1A3A42),
       appBar: AppBar(
         backgroundColor: const Color(0xFF121212),
         title: const Text(
@@ -39,13 +49,40 @@ class profile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Dot Phasor',
-                          style: TextStyle(
+                        Text(
+                          '${user["firstName"]} ${user["lastName"]}',
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          user["phoneNumber"],
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                        Text(
+                          user["email"],
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Text(
+                              'Status: ',
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                            Text(
+                              user["isDisabled"] ? "Disabled" : "Active",
+                              style: TextStyle(
+                                color: user["isDisabled"]
+                                    ? Colors.red
+                                    : Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -63,24 +100,11 @@ class profile extends StatelessWidget {
                     ));
               },
               child: const Text(
-                'Add Created card Data',
+                'Add Created Card Data',
                 style: TextStyle(fontSize: 16, color: Color(0xffffffff)),
               ),
             ),
             const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => accountsetting(),
-                    ));
-              },
-              child: const Text(
-                'Setting',
-                style: TextStyle(fontSize: 16, color: Color(0xfffcfcfc)),
-              ),
-            ),
             const Spacer(),
           ],
         ),

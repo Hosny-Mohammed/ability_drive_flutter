@@ -165,7 +165,7 @@ class PaymentInfoPage extends StatelessWidget {
 
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => profile()),
+                              MaterialPageRoute(builder: (context) => Profile()),
                             );
                           }
                         },
