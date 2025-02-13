@@ -1,5 +1,9 @@
+import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/screens/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/add_card_provider.dart';
 
 
 class PaymentInfoPage extends StatelessWidget {
@@ -11,21 +15,11 @@ class PaymentInfoPage extends StatelessWidget {
   final _cvvController = TextEditingController();
   final _zipController = TextEditingController();
 
-  void _validateAndSubmit(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('All fields are valid! Processing payment...')),
-      );
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => profile()),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AddCardProvider>(context, listen: false);
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment', style: TextStyle(color: Colors.black)),
@@ -162,7 +156,19 @@ class PaymentInfoPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 25),
                       ElevatedButton(
-                        onPressed: () => _validateAndSubmit(context),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await provider.addCard(userId: authProvider.userId ?? authProvider.model!.id, cardHolderName: _nameController.text, cardNumber: _cardController.text, expiryDate: _expDateController.text, securityCode: _cvvController.text, zipCode: _zipController.text);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('All fields are valid! Processing payment...')),
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => profile()),
+                            );
+                          }
+                        },
                         child: const Text('Confirm Payment'),
                       ),
                     ],
