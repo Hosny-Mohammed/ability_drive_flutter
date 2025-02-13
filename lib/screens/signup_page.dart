@@ -23,7 +23,7 @@ class RegistrationScreen extends StatelessWidget {
         backgroundColor: const Color(0xff17494c),
         elevation: 0,
       ),
-      body: SingleChildScrollView( // Added SingleChildScrollView here
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Form(
@@ -133,28 +133,43 @@ class RegistrationScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  children: [
-                    const Text(
-                      'Are You Disabled',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    const Spacer(),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: isDisabled,
-                      builder: (context, value, child) {
-                        return Checkbox(
-                          value: value,
-                          onChanged: (newValue) {
-                            isDisabled.value = newValue!;
-                          },
-                          checkColor: Colors.black,
-                          activeColor: Colors.white,
-                        );
-                      },
-                    ),
-                  ],
+
+                // 🔹 Improved "Are You Disabled?" Section
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white70, width: 1),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Are You Disabled?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: isDisabled,
+                        builder: (context, value, child) {
+                          return Switch(
+                            value: value,
+                            onChanged: (newValue) {
+                              isDisabled.value = newValue;
+                            },
+                            activeColor: Colors.blueAccent,
+                            inactiveTrackColor: Colors.white38,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
@@ -165,7 +180,6 @@ class RegistrationScreen extends StatelessWidget {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Call the registration method and wait for it to complete
                         await provider.registration(
                           email: _emailController.text.trim(),
                           firstName: _firstNameController.text.trim(),
@@ -175,22 +189,38 @@ class RegistrationScreen extends StatelessWidget {
                           isDisabled: isDisabled.value,
                         );
 
-                        // Check the registration status after the registration method has completed
                         if (provider.registrationStatus != null && provider.registrationStatus!) {
-                          // Navigate to the homepage if registration is successful
-                          // Show the snackbar if registration fails
                           ScaffoldMessenger.of(context).showSnackBar(
-                              provider.registrationSnackbar!);
+                            SnackBar(
+                              content: const Text(
+                                "Registration Successful!",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              backgroundColor: Colors.green,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Homepage(userId: provider.model!.id),
                             ),
                           );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                "Registration Failed. Try Again.",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
                         }
                       }
                     },
-
                     child: const Text(
                       'Next',
                       style: TextStyle(color: Colors.white, fontSize: 16),
