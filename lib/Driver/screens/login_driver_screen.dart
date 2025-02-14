@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ability_drive_flutter/widgets/custom_text_field.dart';
 import 'package:ability_drive_flutter/screens/Home_page.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../providers/auth_driver_provider.dart';
 
 class LoginDriverScreen extends StatelessWidget {
   const LoginDriverScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AuthDriverProvider>(context, listen: false);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController licenseNumberController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
@@ -38,7 +42,7 @@ class LoginDriverScreen extends StatelessWidget {
               CustomTextField(
                 controller: licenseNumberController,
                 hintText: 'Enter your license number',
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your license number';
@@ -56,7 +60,7 @@ class LoginDriverScreen extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
-                  } else if (value.length < 9) {
+                  } else if (value.length <= 1) {
                     return 'Password must be at least 8 characters';
                   }
                   return null;
@@ -73,12 +77,16 @@ class LoginDriverScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Homepage()),
-                    // );
+                    await provider.login(licenseNumber: licenseNumberController.text, password: passwordController.text);
+                    if(provider.loginStatus!){
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => Homepage()),
+                      // );
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                   }
                 },
                 child: const Text('Login', style: TextStyle(color: Colors.white)),

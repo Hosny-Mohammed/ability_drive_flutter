@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 
 class AuthDriverProvider extends ChangeNotifier{
   SnackBar? loginSnackbar;
+  bool? loginStatus;
   String? driverName;
-  String? driverId;
+  int? driverId;
 
   Future<void> login({required String licenseNumber, required String password})async{
     var response = await AuthDriverService.login(licenseNumber: licenseNumber, password: password);
+    loginStatus = response != null;
     if(response != null){
+
       driverName = response['driverName'];
       driverId = response['driverId'];
       loginSnackbar = SnackBar(content: Text("Welcome back, $driverName"), backgroundColor: Colors.green,);
