@@ -114,7 +114,7 @@ class PrivateBook extends StatelessWidget {
                           preferredLocations: (driver['preferredLocations'] as List<dynamic>?)?.cast<String>() ?? [],
                           onBookPressed: () async{
                             await provider.bookRide(
-                              userId: authProvider.userId!,
+                              userId: authProvider.model!.id,
                               driverId: driver['id'],
                               pickupLocation: pickupController.text,
                               destination: destinationController.text,

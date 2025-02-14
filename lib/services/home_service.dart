@@ -24,19 +24,28 @@ class HomeService {
   }
 
 
-  static Future<bool> bookRide({required int userId,required int busScheduleId })async{
+  static Future<Map<String, dynamic>?> bookRide({required int userId,required int busScheduleId })async{
     try{
       Response response = await dio.patch('https://abilitydrive.runasp.net/api/Ride/bus/$userId/$busScheduleId');
-      if(response.statusCode == 200 && response.data['status'] == true){
-        return response.data['status'];
+      if(response.statusCode == 200){
+        //return response.data['status'];
+        return {
+          "status": response.data['status'],
+          "message": response.data['message']
+        };
       }
-      return false;
+      return {
+        "status": response.data['status'],
+        "message": response.data['message']
+      };
     }catch(ex){
       if (kDebugMode) {
         print("Error:$ex");
-        return false;
+        return {
+          "status": false,
+          "message": "Couldn't fetch data"
+        };
       }
     }
-    return false;
   }
 }

@@ -36,7 +36,7 @@ class AuthService {
     }
   }
 
-  static Future<int?> logIn({required String phone, required String password})async{
+  static Future<UserModel?> logIn({required String phone, required String password})async{
     try{
       Map credential = {
         "phoneNumber": phone,
@@ -44,8 +44,12 @@ class AuthService {
       };
       Response response = await dio.post('https://abilitydrive.runasp.net/api/User/login', data: credential);
 
-      if(response.statusCode == 200 && response.data['status']){
-        return response.data['userId'];
+      if(response.statusCode == 200){
+        var model = UserModel.getJson(response.data);
+        if(model.status){
+          return model;
+        }
+        return null;
       }
       return null;
     }catch(ex){

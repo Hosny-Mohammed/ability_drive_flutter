@@ -89,7 +89,7 @@ class LoginPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Homepage(userId: provider.userId!),
+                            builder: (context) => Homepage(userId: provider.model!.id),
                           ),
                         );
                       }

@@ -158,7 +158,7 @@ class PaymentInfoPage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await provider.addCard(userId: authProvider.userId ?? authProvider.model!.id, cardHolderName: _nameController.text, cardNumber: _cardController.text, expiryDate: _expDateController.text, securityCode: _cvvController.text, zipCode: _zipController.text);
+                            await provider.addCard(userId: authProvider.model!.id, cardHolderName: _nameController.text, cardNumber: _cardController.text, expiryDate: _expDateController.text, securityCode: _cvvController.text, zipCode: _zipController.text);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('All fields are valid! Processing payment...')),
                             );

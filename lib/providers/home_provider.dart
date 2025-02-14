@@ -9,6 +9,8 @@ class HomeProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
   SnackBar? bookingSnack;
+  bool isBookingSuccessful = false; // Added this property
+
   Future<void> fetchData(String filterValue) async {
     _isLoading = true;
     notifyListeners();
@@ -27,16 +29,27 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> bookRide({required int userId, required int busScheduleId}) async {
-    var bookingStatus = await HomeService.bookRide(userId: userId, busScheduleId: busScheduleId);
+  Future<void> bookRide({
+    required int userId,
+    required int busScheduleId,
+  }) async {
+    var bookingStatus = await HomeService.bookRide(
+      userId: userId,
+      busScheduleId: busScheduleId,
+    );
 
-    if (bookingStatus) {
-      bookingSnack = const SnackBar(
-        content: Text("Your ride has been booked successfully"),
-        backgroundColor: Colors.green,
-      );
+    // Dynamically handle SnackBar message from the response
+    bookingSnack = SnackBar(
+      content: Text(bookingStatus?['message'] ?? "Something went wrong!"),
+      backgroundColor: bookingStatus?['status'] == true ? Colors.green : Colors.red,
+    );
 
-      // Update the local data manually without re-fetching
+    // Update bookingSuccess based on the response status
+    isBookingSuccessful = bookingStatus?['status'] == true;
+
+    // Handle case where no available seats or an error occurs
+    if (isBookingSuccessful) {
+      // If booking is successful, update local data
       for (var bus in allBuses) {
         if (bus['id'] == busScheduleId) {
           bus['availableSeats'] = (bus['availableSeats'] ?? 0) - 1;
@@ -47,15 +60,17 @@ class HomeProvider extends ChangeNotifier {
       // Reapply the filter to the updated data
       filteredBuses = allBuses.where((bus) {
         String fromLocation = (bus['fromLocation'] ?? '').toLowerCase();
-        return fromLocation.contains('');
+        return fromLocation.contains(''); // Apply your filter logic
       }).toList();
     } else {
-      bookingSnack = const SnackBar(
-        content: Text("Something went wrong!"),
-        backgroundColor: Colors.red,
-      );
+      // Handle the case where no available seats or buses
+      if (bookingStatus?['message'] == "No available seats for the selected bus.") {
+        // Optionally log, show a more specific message, or handle this case
+        print("No seats available for this bus.");
+      }
     }
 
+    // Notify listeners to update the UI
     notifyListeners();
   }
 

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   UserModel? model;
-  int? userId;
   SnackBar? registrationSnackbar;
   bool? registrationStatus;
   SnackBar? loginSnackbar;
@@ -32,9 +31,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> logIn({required String phone, required String password})async{
-    userId = await AuthService.logIn(phone: phone, password: password);
+    model = await AuthService.logIn(phone: phone, password: password);
 
-    loginStatus = userId != null;
+    loginStatus = model != null;
     if(loginStatus!){
       loginSnackbar = const SnackBar(
         content: Text('Login successful! Welcome back!'),

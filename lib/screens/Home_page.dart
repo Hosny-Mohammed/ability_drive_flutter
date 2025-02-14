@@ -185,20 +185,24 @@ class Homepage extends StatelessWidget {
                                           const SizedBox(height: 10),
                                           ElevatedButton(
                                             onPressed: () async {
-                                              // Trigger booking and data refresh
                                               await homeProvider.bookRide(
                                                 userId: userId,
                                                 busScheduleId: bus['id'],
                                               );
 
-                                              // Fetch the latest data to reflect changes
-                                              homeProvider.fetchData(pickupController.text);
-
-                                              // Display booking result
                                               ScaffoldMessenger.of(context)
-                                                  .showSnackBar(homeProvider.bookingSnack!);
+                                                  .showSnackBar(
+                                                  homeProvider.bookingSnack!);
 
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentMethod()));
+                                              if (homeProvider
+                                                  .isBookingSuccessful) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PaymentMethod()),
+                                                );
+                                              }
                                             },
                                             child: const Text('Book'),
                                           ),
