@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'Home_page.dart';
+import '../Home_page.dart';
 
 class PaymentMethod extends StatelessWidget {
   PaymentMethod({Key? key}) : super(key: key);
 
   final ValueNotifier<String?> _selectedPayment = ValueNotifier<String?>(null);
+  final TextEditingController _voucherController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    double totalCost = 200.0;
+
     return Scaffold(
       backgroundColor: const Color(0xff0e4f55),
       appBar: AppBar(
@@ -19,6 +22,13 @@ class PaymentMethod extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Display the total cost at the top
+            Text(
+              "Total Cost: \$${totalCost.toStringAsFixed(2)}",
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
             const Text(
               "Select your preferred payment method",
               style: TextStyle(
@@ -27,12 +37,44 @@ class PaymentMethod extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
+            // Payment Options
             _buildPaymentOption("Credit or Debit Card", Icons.credit_card),
             const SizedBox(height: 12),
-            _buildPaymentOption("Paytm", Icons.account_balance_wallet),
-            const SizedBox(height: 12),
             _buildPaymentOption("Cash", Icons.money),
+            const SizedBox(height: 20),
+            // Voucher TextField
+            const Text(
+              "Enter Voucher Code (optional):",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _voucherController,
+              decoration: InputDecoration(
+                hintText: "Voucher Code",
+                hintStyle: const TextStyle(color: Colors.white70),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.1),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.white54),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.white54),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.blueAccent),
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
             const Spacer(),
+            // Confirm Button
             ValueListenableBuilder<String?>(
               valueListenable: _selectedPayment,
               builder: (context, selected, _) {
@@ -45,10 +87,20 @@ class PaymentMethod extends StatelessWidget {
                     ),
                     onPressed: selected != null
                         ? () {
+                      if (selected == "Credit or Debit Card") {
+                        // Navigate to a credit card details screen or perform any action
+                        // Add your custom implementation here for credit card payment
+                        print("Credit card payment selected");
+                      } else if (selected == "Cash") {
+                        // Handle cash payment
+                        print("Cash payment selected");
+                      }
+
                       // Show success message
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Payment method selected successfully!"),
+                          content:
+                          Text("Payment method selected successfully!"),
                           backgroundColor: Colors.green,
                           duration: Duration(seconds: 2),
                         ),

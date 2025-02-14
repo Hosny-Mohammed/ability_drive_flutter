@@ -1,8 +1,8 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/custom_text_field.dart';
-import 'Home_page.dart';
+import '../../widgets/custom_text_field.dart';
+import '../Home_page.dart';
 
 class RegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

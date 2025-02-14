@@ -1,7 +1,7 @@
 import 'package:ability_drive_flutter/providers/home_provider.dart';
-import 'package:ability_drive_flutter/screens/payment_Method_page.dart';
-import 'package:ability_drive_flutter/screens/private_Book.dart';
-import 'package:ability_drive_flutter/screens/profile_page.dart';
+import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
+import 'package:ability_drive_flutter/screens/booking_rides/private_Book.dart';
+import 'package:ability_drive_flutter/screens/authentication/profile_page.dart';
 import 'package:ability_drive_flutter/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

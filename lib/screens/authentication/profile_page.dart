@@ -1,9 +1,8 @@
-import 'package:ability_drive_flutter/screens/payment_information_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
-import 'Rides_History/rides_page.dart';
-import 'Rides_History/seat_bookings_page.dart'; // Import your Credit Card page
+import '../Rides_History/rides_page.dart';
+import '../Rides_History/seat_bookings_page.dart'; // Import your Credit Card page
 
 class Profile extends StatelessWidget {
   Profile();
@@ -127,20 +126,6 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentInfoPage(), // Navigate to the Credit Card page
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Manage Credit Card',
-                    style: TextStyle(fontSize: 16, color: Color(0xffffffff)),
-                  ),
-                ),
               ],
             ),
           );

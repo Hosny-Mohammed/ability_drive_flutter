@@ -2,7 +2,6 @@ import 'package:ability_drive_flutter/providers/add_card_provider.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/providers/home_provider.dart';
 import 'package:ability_drive_flutter/providers/private_ride_provider.dart';
-import 'package:ability_drive_flutter/providers/profile_provider.dart';
 import 'package:ability_drive_flutter/screens/Welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +19,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => DriversProvider()),
         ChangeNotifierProvider(create: (context) => AddCardProvider()),
-        ChangeNotifierProvider(create: (context) => ProfileProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // Removes the debug banner

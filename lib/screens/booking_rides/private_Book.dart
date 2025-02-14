@@ -1,10 +1,10 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
-import 'package:ability_drive_flutter/screens/payment_Method_page.dart';
+import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/private_ride_provider.dart';
-import '../widgets/custom_text_field.dart';
-import '../widgets/driver_card.dart';
+import '../../providers/private_ride_provider.dart';
+import '../../widgets/custom_text_field.dart';
+import '../../widgets/driver_card.dart';
 
 class PrivateBook extends StatelessWidget {
   PrivateBook({Key? key}) : super(key: key);
@@ -113,12 +113,12 @@ class PrivateBook extends StatelessWidget {
                           rating: driver['rating'] ?? 0.0,
                           preferredLocations: (driver['preferredLocations'] as List<dynamic>?)?.cast<String>() ?? [],
                           onBookPressed: () async{
-                            await provider.bookRide(
-                              userId: authProvider.model!.id,
-                              driverId: driver['id'],
-                              pickupLocation: pickupController.text,
-                              destination: destinationController.text,
-                            );
+                            // await provider.bookRide(
+                            //   userId: authProvider.model!.id,
+                            //   driverId: driver['id'],
+                            //   pickupLocation: pickupController.text,
+                            //   destination: destinationController.text,
+                            // );
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Ride booked successfully!"),

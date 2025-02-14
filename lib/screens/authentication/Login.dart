@@ -1,10 +1,10 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ability_drive_flutter/screens/signup_page.dart';
-import '../widgets/custom_text_field.dart';
+import 'package:ability_drive_flutter/screens/authentication/signup_page.dart';
+import '../../widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
-import 'Home_page.dart';
-import 'Reset_password/reset_pass_page.dart';
+import '../Home_page.dart';
+import '../Reset_password/reset_pass_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 
-import 'package:ability_drive_flutter/screens/payment_Method_page.dart';
+import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
 import 'package:flutter/material.dart';
 
-import 'Home_page.dart';
+import '../Home_page.dart';
 
 class Paymentpage extends StatelessWidget {
   @override
