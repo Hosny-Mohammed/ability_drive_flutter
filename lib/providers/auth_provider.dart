@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:ability_drive_flutter/services/auth_service.dart';
 import 'package:ability_drive_flutter/models/user_model.dart';
-import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   UserModel? model;
@@ -9,43 +9,58 @@ class AuthProvider extends ChangeNotifier {
   SnackBar? loginSnackbar;
   bool? loginStatus;
 
-  Future<void> registration({required String phone, required String email, required String firstName, required String lastName, required String password, required bool isDisabled}) async {
+  Future<void> registration({
+    required String phone,
+    required String email,
+    required String firstName,
+    required String lastName,
+    required String password,
+    required bool isDisabled,
+  }) async {
+    var result = await AuthService.registration(
+      phone: phone,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+      isDisabled: isDisabled,
+    );
 
-    model = await AuthService.registration(phone: phone, email: email, firstName: firstName, lastName: lastName, password: password, isDisabled: isDisabled);
-
+    model = result["model"];
     registrationStatus = model != null;
-    if(registrationStatus!){
+    // Use the message from the API response regardless of success or failure.
+    if (registrationStatus!) {
       registrationSnackbar = SnackBar(
         content: Text('Registration successful! Welcome, ${model!.name}!'),
         backgroundColor: Colors.green, // Green for success
       );
-      notifyListeners();
-    }else{
-      registrationSnackbar = const SnackBar(
-        content: Text('Registration failed. Please try again.'),
-        backgroundColor: Colors.red, // Red for failure
+    } else {
+      registrationSnackbar = SnackBar(
+        content: Text(result["message"] ?? 'Registration failed. Please try again.'),
+        backgroundColor: Colors.red,
       );
-      notifyListeners();
     }
     notifyListeners();
   }
 
-  Future<void> logIn({required String phone, required String password})async{
-    model = await AuthService.logIn(phone: phone, password: password);
+  Future<void> logIn({required String phone, required String password}) async {
+    var result = await AuthService.logIn(
+      phone: phone,
+      password: password,
+    );
 
+    model = result["model"];
     loginStatus = model != null;
-    if(loginStatus!){
-      loginSnackbar = const SnackBar(
-        content: Text('Login successful! Welcome back!'),
-        backgroundColor: Colors.green, // Green for success
+    if (loginStatus!) {
+      loginSnackbar = SnackBar(
+        content: Text(result["message"]),
+        backgroundColor: Colors.green,
       );
-      notifyListeners();
-    }else{
-      loginSnackbar = const SnackBar(
-        content: Text('Login failed. Please check your credentials.'),
-        backgroundColor: Colors.red, // Red for failure
+    } else {
+      loginSnackbar = SnackBar(
+        content: Text(result["message"] ?? 'Login failed. Please check your credentials.'),
+        backgroundColor: Colors.red,
       );
-      notifyListeners();
     }
     notifyListeners();
   }

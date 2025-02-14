@@ -64,13 +64,11 @@ class SeatBookingModel {
   String busName;
   bool isDisabledPassenger;
   DateTime bookingTime;
-  int status;
 
   SeatBookingModel({
     required this.busName,
     required this.isDisabledPassenger,
     required this.bookingTime,
-    required this.status,
   });
 
   factory SeatBookingModel.getJson(Map<String, dynamic> json) {
@@ -78,7 +76,6 @@ class SeatBookingModel {
       busName: json['busName'],
       isDisabledPassenger: json['isDisabledPassenger'],
       bookingTime: DateTime.parse(json['bookingTime']),
-      status: json['status'],
     );
   }
 }

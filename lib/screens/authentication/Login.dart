@@ -84,8 +84,6 @@ class LoginPage extends StatelessWidget {
                       // Check the login status after the logIn method has completed
                       if (provider.loginStatus!) {
                         // Navigate to the homepage if login is successful
-                        // Show the snackbar if login fails
-                        ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -93,6 +91,8 @@ class LoginPage extends StatelessWidget {
                           ),
                         );
                       }
+                      // Show the snackbar if login fails
+                      ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                     }
                   },
                   child: const Text('Login',

@@ -188,34 +188,12 @@ class RegistrationScreen extends StatelessWidget {
                           phone: _phoneController.text.trim(),
                           isDisabled: isDisabled.value,
                         );
-
+                        ScaffoldMessenger.of(context).showSnackBar(provider.registrationSnackbar!);
                         if (provider.registrationStatus != null && provider.registrationStatus!) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text(
-                                "Registration Successful!",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              backgroundColor: Colors.green,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Homepage(userId: provider.model!.id),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text(
-                                "Registration Failed. Try Again.",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              backgroundColor: Colors.red,
-                              duration: const Duration(seconds: 2),
                             ),
                           );
                         }

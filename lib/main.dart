@@ -1,4 +1,3 @@
-import 'package:ability_drive_flutter/providers/add_card_provider.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/providers/home_provider.dart';
 import 'package:ability_drive_flutter/providers/private_ride_provider.dart';
@@ -18,7 +17,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => DriversProvider()),
-        ChangeNotifierProvider(create: (context) => AddCardProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // Removes the debug banner
