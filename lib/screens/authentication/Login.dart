@@ -1,3 +1,4 @@
+import 'package:ability_drive_flutter/Driver/screens/login_driver_screen.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ability_drive_flutter/screens/authentication/signup_page.dart';
@@ -17,6 +18,27 @@ class LoginPage extends StatelessWidget {
     final TextEditingController _passwordController = TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xff17494c),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginDriverScreen()),
+              );
+            },
+            child: const Text(
+              'Login Driver',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xff17494c),
       body: SingleChildScrollView(
         child: Padding(
