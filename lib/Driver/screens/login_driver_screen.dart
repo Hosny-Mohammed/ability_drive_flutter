@@ -110,12 +110,21 @@ class LoginDriverScreen extends StatelessWidget {
               // "Join in Application" Link
               GestureDetector(
                 onTap: () async {
-                  // Uri uri = Uri.parse(url);
-                  // if (await canLaunchUrl(uri)) {
-                  // await launchUrl(uri, mode: LaunchMode.externalApplication); // Opens in external browser.
-                  // } else {
-                  // throw 'Could not launch $url';
-                  // }
+                  const url = 'https://forms.gle/yu4QraZBduenU7RY7';
+                  final uri = Uri.parse(url);
+                  try {
+                    await launchUrl(
+                      uri,
+                      mode: LaunchMode.platformDefault, // Changed to platformDefault
+                    );
+                  } catch (e) {
+                    // Show error feedback to user
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Could not open link: $e'),
+                      ),
+                    );
+                  }
                 },
                 child: const Text(
                   "Join Us",
@@ -125,6 +134,7 @@ class LoginDriverScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
             ],
           ),
         ),
