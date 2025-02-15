@@ -1,6 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Add internet permission here -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Queries MUST be placed at manifest level, NOT inside application -->
+    <queries>
+        <!-- Existing PROCESS_TEXT intent -->
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+
+        <!-- Add URL handling intents -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
 
     <application
             android:label="ability_drive_flutter"
@@ -16,7 +34,7 @@
                 android:hardwareAccelerated="true"
                 android:windowSoftInputMode="adjustResize">
 
-            <!-- Add intent filter for URL handling -->
+            <!-- URL intent filter -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -26,32 +44,13 @@
 
             <meta-data
                     android:name="io.flutter.embedding.android.NormalTheme"
-                    android:resource="@style/NormalTheme"
-            />
+                    android:resource="@style/NormalTheme" />
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Add these queries to handle URL launching -->
-        <queries>
-            <!-- Existing PROCESS_TEXT query -->
-            <intent>
-                <action android:name="android.intent.action.PROCESS_TEXT"/>
-                <data android:mimeType="text/plain"/>
-            </intent>
-
-            <!-- Add URL handling queries -->
-            <intent>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="https" />
-            </intent>
-            <intent>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="http" />
-            </intent>
-        </queries>
 
         <meta-data
                 android:name="flutterEmbedding"
