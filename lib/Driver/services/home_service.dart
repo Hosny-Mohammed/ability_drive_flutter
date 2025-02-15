@@ -36,4 +36,17 @@ class HomeService{
     var model = DriverResponse.fromJson(response.data);
     return model;
   }
+
+  static Future<bool> updateRideStatus({required int rideId, required String status, required String reason})async{
+    Map body = {
+      "status": status,
+      "reason": reason
+    };
+    Response response = await dio.put('https://abilitydrive.runasp.net/api/Ride/$rideId/status', data: body);
+
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
 }

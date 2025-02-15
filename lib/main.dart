@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Driver/providers/auth_driver_provider.dart';
+import 'Driver/providers/home_driver_provider.dart';
 
 void main() => runApp(const MyApp());
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => DriversProvider()),
         ChangeNotifierProvider(create: (context) => AuthDriverProvider()),
+        ChangeNotifierProvider(create: (context) => HomeDriverProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, // Removes the debug banner

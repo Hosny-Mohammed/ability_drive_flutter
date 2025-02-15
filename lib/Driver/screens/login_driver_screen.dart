@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/auth_driver_provider.dart';
+import 'home_driver_provider.dart';
 
 class LoginDriverScreen extends StatelessWidget {
   const LoginDriverScreen({super.key});
@@ -81,10 +82,10 @@ class LoginDriverScreen extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     await provider.login(licenseNumber: licenseNumberController.text, password: passwordController.text);
                     if(provider.loginStatus!){
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Homepage()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DriverHomePage(driverId:  provider.driverId!)),
+                      );
                     }
                     ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                   }
