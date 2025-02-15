@@ -1,8 +1,8 @@
 // home_provider.dart
 import 'package:flutter/material.dart';
-import 'package:ability_drive_flutter/Driver/models/driver_model.dart';
-import 'package:ability_drive_flutter/Driver/models/rides_model.dart';
-import 'package:ability_drive_flutter/Driver/services/home_service.dart';
+import '../models/driver_model.dart';
+import '../models/rides_model.dart';
+import '../services/home_service.dart';
 
 class HomeDriverProvider extends ChangeNotifier {
   Driver? _driver;
@@ -25,10 +25,11 @@ class HomeDriverProvider extends ChangeNotifier {
       _availability = _driver?.isAvailable ?? false;
     } catch (e) {
       print("Error fetching driver info: $e");
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> fetchRides(int driverId) async {
@@ -42,35 +43,56 @@ class HomeDriverProvider extends ChangeNotifier {
       }
     } catch (e) {
       print("Error fetching rides: $e");
-    }
-
-    _isLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> toggleAvailability(int driverId, bool newValue) async {
-    final success = await HomeService.changeAvailability(
-      driverId: driverId,
-      availability: newValue,
-    );
-
-    if (success) {
-      _availability = newValue;
-      if (newValue) fetchRides(driverId);
+      rethrow;
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> updateRideStatus(int rideId, String status, String reason) async {
-    final success = await HomeService.updateRideStatus(
-      rideId: rideId,
-      status: status,
-      reason: reason,
-    );
+  Future<bool> toggleAvailability(int driverId, bool newValue) async {
+    try {
+      final success = await HomeService.changeAvailability(
+        driverId: driverId,
+        availability: newValue,
+      );
 
-    if (success) {
-      _rides.removeWhere((ride) => ride.id == rideId);
-      notifyListeners();
+      if (success) {
+        _availability = newValue;
+        if (newValue) {
+          await fetchRides(driverId);
+        }
+        notifyListeners();
+      }
+      return success;
+    } catch (e) {
+      print("Error toggling availability: $e");
+      return false;
+    }
+  }
+
+  Future<bool> updateRideStatus(int rideId, String status, String reason) async {
+    try {
+      final success = await HomeService.updateRideStatus(
+        rideId: rideId,
+        status: status,
+        reason: reason,
+      );
+
+      if (success) {
+        final index = _rides.indexWhere((ride) => ride.id == rideId);
+        if (index != -1) {
+          _rides[index] = _rides[index].copyWith(
+            status: status,
+            reason: reason,
+          );
+          notifyListeners();
+        }
+      }
+      return success;
+    } catch (e) {
+      print("Error updating ride status: $e");
+      return false;
     }
   }
 }

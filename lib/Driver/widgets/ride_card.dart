@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+// ride_card.dart
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import '../models/rides_model.dart';
 
 class RideCard extends StatelessWidget {
@@ -18,42 +18,52 @@ class RideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('From: ${ride.pickupLocation}'),
-            Text('To: ${ride.destination}'),
-            Text('Cost: \$${ride.cost.toStringAsFixed(2)}'),
-            Text('Status: ${ride.status}'),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
+            Text('From: ${ride.pickupLocation}', style: const TextStyle(fontSize: 16)),
+            Text('To: ${ride.destination}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('Fare: \$${ride.cost.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16)),
+
+            if (ride.status == 'confirmed') ...[
+              const SizedBox(height: 16),
+              const Divider(),
+              const Text('Passenger Details:', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Name: ${ride.username}'),
+              Row(
+                children: [
+                  Text('Phone: ${ride.phoneNumber}'),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.content_copy, size: 20),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: ride.phoneNumber));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Phone number copied!')),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ] else
+              ButtonBar(
+                children: [
+                  ElevatedButton(
                     onPressed: onConfirm,
-                    icon: const Icon(Icons.check),
-                    label: const Text('Confirm'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text('Confirm Ride'),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton.icon(
+                  TextButton(
                     onPressed: onCancel,
-                    icon: const Icon(Icons.close),
-                    label: const Text('Cancel'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
+                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                    child: const Text('Cancel Ride'),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),
