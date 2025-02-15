@@ -113,12 +113,12 @@ class PrivateBook extends StatelessWidget {
                           rating: driver['rating'] ?? 0.0,
                           preferredLocations: (driver['preferredLocations'] as List<dynamic>?)?.cast<String>() ?? [],
                           onBookPressed: () async{
-                            // await provider.bookRide(
-                            //   userId: authProvider.model!.id,
-                            //   driverId: driver['id'],
-                            //   pickupLocation: pickupController.text,
-                            //   destination: destinationController.text,
-                            // );
+                            await provider.bookRide(
+                              userId: authProvider.model!.id,
+                              driverId: driver['id'],
+                              pickupLocation: pickupController.text,
+                              destination: destinationController.text,
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Ride booked successfully!"),
