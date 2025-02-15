@@ -100,20 +100,3 @@ class WelcomePage extends StatelessWidget {
     );
   }
 }
-
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Page 3'),
-      ),
-      body: Center(
-        child: Text(
-          'Welcome to Page 3!',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
