@@ -108,25 +108,86 @@ class PrivateBook extends StatelessWidget {
                           name: driver['name'] ?? 'Unknown',
                           vehicleType: driver['vehicleType'] ?? 'Unknown',
                           isAvailable: driver['isAvailable'] ?? false,
-                          lastKnownLocation: driver['lastKnownLocation'] ?? 'Unknown',
+                          lastKnownLocation:
+                          driver['lastKnownLocation'] ?? 'Unknown',
                           phoneNumber: driver['phoneNumber'] ?? 'Unknown',
                           rating: driver['rating'] ?? 0.0,
-                          preferredLocations: (driver['preferredLocations'] as List<dynamic>?)?.cast<String>() ?? [],
-                          onBookPressed: () async{
-                            await provider.bookRide(
+                          preferredLocations: (driver['preferredLocations']
+                          as List<dynamic>?)
+                              ?.cast<String>() ??
+                              [],
+                          onBookPressed: () async {
+                            // Show loading indicator (modal)
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+
+                            // Attempt to book the ride
+                            final ride = await provider.bookRide(
                               userId: authProvider.model!.id,
                               driverId: driver['id'],
                               pickupLocation: pickupController.text,
                               destination: destinationController.text,
                             );
+
+                            if (ride == null) {
+                              Navigator.pop(context); // dismiss loading
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Booking failed."),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            final rideId = ride['id'];
+                            bool? confirmed;
+                            // Poll the check-status endpoint every 2 seconds.
+                            while (true) {
+                              final statusResponse =
+                              await provider.checkRideStatus(rideId: rideId);
+                              if (statusResponse != null) {
+                                final status = statusResponse['status'];
+                                if (status == 'confirmed') {
+                                  confirmed = true;
+                                  break;
+                                } else if (status == 'canceled') {
+                                  confirmed = false;
+                                  // Dismiss loader and show the cancellation reason.
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "Ride canceled: ${statusResponse['reason']}"),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
+                              }
+                              // Wait before polling again.
+                              await Future.delayed(
+                                  const Duration(seconds: 2));
+                            }
+
+                            // Ride is confirmed: dismiss loader and navigate.
+                            Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Ride booked successfully!"),
+                                content: Text("Ride confirmed!"),
                                 backgroundColor: Colors.green,
                               ),
-
                             );
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethod()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentMethod()),
+                            );
                           },
                         );
                       },

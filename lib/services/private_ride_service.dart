@@ -3,21 +3,22 @@ import 'package:flutter/foundation.dart';
 
 import '../models/driver_profile_model.dart';
 
-class PrivateRideService{
+class PrivateRideService {
   static Dio dio = Dio();
 
-  static Future<List<dynamic>?> fetchData({required String preferredLocation,required String lastKnownLocation}) async {
+  static Future<List<dynamic>?> fetchData({
+    required String preferredLocation,
+    required String lastKnownLocation,
+  }) async {
     try {
-      // Construct query parameters
       Map<String, String> queryParams = {};
-      if (preferredLocation != null && preferredLocation.isNotEmpty) {
+      if (preferredLocation.isNotEmpty) {
         queryParams['preferredLocation'] = preferredLocation;
       }
-      if (lastKnownLocation != null && lastKnownLocation.isNotEmpty) {
+      if (lastKnownLocation.isNotEmpty) {
         queryParams['lastKnownLocation'] = lastKnownLocation;
       }
 
-      // Make API request with query parameters
       Response response = await dio.get(
         'https://abilitydrive.runasp.net/api/driver/available-drivers',
         queryParameters: queryParams,
@@ -39,23 +40,52 @@ class PrivateRideService{
     }
   }
 
-
-  static Future<double> bookRide({required int userId,required int driverId,required String pickupLocation,required String destination}) async{
-    try{
+  /// Book a ride and return the ride object
+  static Future<Map<String, dynamic>?> bookRide({
+    required int userId,
+    required int driverId,
+    required String pickupLocation,
+    required String destination,
+  }) async {
+    try {
       Map data = {
         "pickupLocation": pickupLocation,
-        "destination": destination
+        "destination": destination,
       };
-      Response response = await dio.post('https://abilitydrive.runasp.net/api/Ride/private/$userId/driver/$driverId', data: data);
-      if(response.statusCode == 200 && response.data['status'] == true){
-        return response.data['ride']['cost'];
+      Response response = await dio.post(
+        'https://abilitydrive.runasp.net/api/Ride/private/$userId/driver/$driverId',
+        data: data,
+      );
+      if (response.statusCode == 200 && response.data['status'] == true) {
+        // Expecting response.data['ride'] to include 'id', 'cost', etc.
+        return response.data['ride'];
       }
-      return 0.0;
-    }catch(ex){
+      return null;
+    } catch (ex) {
       if (kDebugMode) {
-        print('Error:$ex');
+        print('Error: $ex');
       }
-      return 0.0;
+      return null;
+    }
+  }
+
+  /// Check the status of a ride using its rideId
+  static Future<Map<String, dynamic>?> checkRideStatus({
+    required int rideId,
+  }) async {
+    try {
+      Response response = await dio.get(
+        'https://abilitydrive.runasp.net/api/Ride/$rideId/check-status',
+      );
+      if (response.statusCode == 200 && response.data['status'] == true) {
+        return response.data['ride'];
+      }
+      return null;
+    } catch (ex) {
+      if (kDebugMode) {
+        print("Error checking ride status: $ex");
+      }
+      return null;
     }
   }
 }
