@@ -8,10 +8,11 @@ import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
   int userId;
+  bool isDisabled;
   final TextEditingController pickupController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Homepage({required this.userId});
+  Homepage({required this.userId, required this.isDisabled});
 
   @override
   Widget build(BuildContext context) {

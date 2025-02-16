@@ -193,7 +193,7 @@ class RegistrationScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Homepage(userId: provider.model!.id),
+                              builder: (context) => Homepage(userId: provider.model!.id, isDisabled: isDisabled.value),
                             ),
                           );
                         }

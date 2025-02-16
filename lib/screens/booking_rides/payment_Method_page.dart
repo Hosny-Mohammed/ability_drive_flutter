@@ -1,4 +1,7 @@
+import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/private_ride_provider.dart';
 import '../Home_page.dart';
 
 class PaymentMethod extends StatelessWidget {
@@ -9,7 +12,9 @@ class PaymentMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double totalCost = 200.0;
+    var provider = Provider.of<DriversProvider>(context, listen: false);
+    var providerAuth = Provider.of<AuthProvider>(context, listen: false);
+    double? totalCost = provider.cost;
 
     return Scaffold(
       backgroundColor: const Color(0xff0e4f55),
@@ -24,7 +29,7 @@ class PaymentMethod extends StatelessWidget {
           children: [
             // Display the total cost at the top
             Text(
-              "Total Cost: \$${totalCost.toStringAsFixed(2)}",
+              "Total Cost: \$${totalCost?.toStringAsFixed(2)}",
               style: const TextStyle(
                   color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
             ),
@@ -111,7 +116,7 @@ class PaymentMethod extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Homepage(userId: 1)),
+                              builder: (context) => Homepage(userId: providerAuth.model!.id, isDisabled: providerAuth.model!.isDisabled,)),
                         );
                       });
                     }
