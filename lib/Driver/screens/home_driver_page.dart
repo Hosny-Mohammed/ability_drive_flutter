@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ability_drive_flutter/Driver/models/driver_model.dart';
@@ -14,16 +15,28 @@ class DriverHomePage extends StatefulWidget {
 }
 
 class _DriverHomePageState extends State<DriverHomePage> {
+  Timer? _refreshTimer;
+
   @override
   void initState() {
     super.initState();
     _initializeData();
+    // Refresh data every 2 seconds
+    _refreshTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _initializeData();
+    });
   }
 
   void _initializeData() {
     final provider = context.read<HomeDriverProvider>();
     provider.fetchDriverInfo(widget.driverId);
     provider.fetchRides(widget.driverId);
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -70,15 +83,18 @@ class _DriverHomePageState extends State<DriverHomePage> {
           final ride = provider.rides[index];
           return RideCard(
             ride: ride,
-            onConfirm: () => _handleRideConfirmation(context, ride.id, provider),
-            onCancel: () => _showCancelReasonSheet(context, ride.id, provider),
+            onConfirm: () =>
+                _handleRideConfirmation(context, ride.id, provider),
+            onCancel: () =>
+                _showCancelReasonSheet(context, ride.id, provider),
           );
         },
       ),
     );
   }
 
-  Future<void> _handleRideConfirmation(BuildContext context, int rideId, HomeDriverProvider provider) async {
+  Future<void> _handleRideConfirmation(
+      BuildContext context, int rideId, HomeDriverProvider provider) async {
     final success = await provider.updateRideStatus(rideId, 'confirmed', '');
     if (!context.mounted) return;
 
@@ -91,7 +107,8 @@ class _DriverHomePageState extends State<DriverHomePage> {
     );
   }
 
-  void _showCancelReasonSheet(BuildContext context, int rideId, HomeDriverProvider provider) {
+  void _showCancelReasonSheet(
+      BuildContext context, int rideId, HomeDriverProvider provider) {
     final reasonController = TextEditingController();
     showModalBottomSheet(
       context: context,
