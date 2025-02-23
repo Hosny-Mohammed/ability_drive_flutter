@@ -16,18 +16,21 @@ class DriverHomePage extends StatefulWidget {
 
 class _DriverHomePageState extends State<DriverHomePage> {
   Timer? _refreshTimer;
+  bool _isLocationSheetOpen = false; // Flag to disable refresh when bottom sheet is open
 
   @override
   void initState() {
     super.initState();
     _initializeData();
-    // Refresh data every 2 seconds
+    // Refresh data every 10 seconds if bottom sheet is not open
     _refreshTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       _initializeData();
     });
   }
 
   void _initializeData() {
+    // Skip refreshing data if the location update sheet is open.
+    if (_isLocationSheetOpen) return;
     final provider = context.read<HomeDriverProvider>();
     provider.fetchDriverInfo(widget.driverId);
     provider.fetchRides(widget.driverId);
@@ -39,11 +42,68 @@ class _DriverHomePageState extends State<DriverHomePage> {
     super.dispose();
   }
 
+  void _showLocationUpdateSheet() async {
+    setState(() {
+      _isLocationSheetOpen = true;
+    });
+    final locationController = TextEditingController();
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: locationController,
+              decoration: const InputDecoration(
+                labelText: 'Enter your new location',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                if (locationController.text.isEmpty) return;
+                final provider = context.read<HomeDriverProvider>();
+                final success = await provider.updateDriverLocation(
+                  widget.driverId,
+                  locationController.text,
+                );
+                if (!mounted) return;
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success
+                        ? 'Location updated successfully!'
+                        : 'Failed to update location'),
+                  ),
+                );
+              },
+              child: const Text('Update Location'),
+            ),
+          ],
+        ),
+      ),
+    );
+    // Once bottom sheet is dismissed, allow refreshing again
+    setState(() {
+      _isLocationSheetOpen = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Driver Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.location_on),
+            onPressed: _showLocationUpdateSheet,
+            tooltip: 'Update Location',
+          )
+        ],
       ),
       body: Consumer<HomeDriverProvider>(
         builder: (context, provider, _) {
@@ -96,7 +156,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
   Future<void> _handleRideConfirmation(
       BuildContext context, int rideId, HomeDriverProvider provider) async {
     final success = await provider.updateRideStatus(rideId, 'confirmed', '');
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -136,7 +196,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
                   reasonController.text,
                 );
 
-                if (!context.mounted) return;
+                if (!mounted) return;
 
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(

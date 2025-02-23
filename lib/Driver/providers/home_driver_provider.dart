@@ -1,4 +1,3 @@
-// home_provider.dart
 import 'package:flutter/material.dart';
 import '../models/driver_model.dart';
 import '../models/rides_model.dart';
@@ -92,6 +91,27 @@ class HomeDriverProvider extends ChangeNotifier {
       return success;
     } catch (e) {
       print("Error updating ride status: $e");
+      return false;
+    }
+  }
+
+  // New: Update driver's location
+  Future<bool> updateDriverLocation(int driverId, String location) async {
+    try {
+      final success = await HomeService.updateDriverLocation(
+        driverId: driverId,
+        location: location,
+      );
+      if (success) {
+        // Optionally update the driver's location locally if your model supports it.
+        if (_driver != null) {
+          _driver = _driver!.copyWith(location: location);
+        }
+        notifyListeners();
+      }
+      return success;
+    } catch (e) {
+      print("Error updating location: $e");
       return false;
     }
   }

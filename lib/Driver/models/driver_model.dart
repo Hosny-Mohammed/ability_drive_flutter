@@ -5,6 +5,7 @@ class Driver {
   final String vehicleType;
   final double rating;
   final bool isAvailable;
+  final String location; // Added field for location
 
   Driver({
     required this.driverId,
@@ -13,6 +14,7 @@ class Driver {
     required this.vehicleType,
     required this.rating,
     required this.isAvailable,
+    required this.location, // Added to constructor
   });
 
   factory Driver.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Driver {
       vehicleType: json['vehicleType'],
       rating: (json['rating'] as num).toDouble(),
       isAvailable: json['isAvailable'],
+      location: json['location'] ?? '', // Use empty string if location is missing
     );
   }
 
@@ -34,7 +37,29 @@ class Driver {
       'vehicleType': vehicleType,
       'rating': rating,
       'isAvailable': isAvailable,
+      'location': location, // Added field to JSON
     };
+  }
+
+  // Added copyWith method to update location (or any field)
+  Driver copyWith({
+    int? driverId,
+    String? driverName,
+    String? licenseNumber,
+    String? vehicleType,
+    double? rating,
+    bool? isAvailable,
+    String? location,
+  }) {
+    return Driver(
+      driverId: driverId ?? this.driverId,
+      driverName: driverName ?? this.driverName,
+      licenseNumber: licenseNumber ?? this.licenseNumber,
+      vehicleType: vehicleType ?? this.vehicleType,
+      rating: rating ?? this.rating,
+      isAvailable: isAvailable ?? this.isAvailable,
+      location: location ?? this.location,
+    );
   }
 }
 
