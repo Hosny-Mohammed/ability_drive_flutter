@@ -76,10 +76,15 @@ class Homepage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PrivateBook()),
-                            );
+                            if(isDisabled){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PrivateBook()),
+                              );
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This Service is available for disabled individuals"), backgroundColor: Colors.red,));
+                            }
+
                           },
                           child: Column(
                             children: const [
