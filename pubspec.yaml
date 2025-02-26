@@ -38,6 +38,7 @@ dependencies:
   dio: ^5.8.0+1
   provider: ^6.1.2
   url_launcher: ^6.3.1
+  flutter_stripe: ^11.4.0
 
 dev_dependencies:
   flutter_test:
