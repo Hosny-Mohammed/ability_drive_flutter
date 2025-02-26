@@ -2,6 +2,7 @@ import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/private_ride_provider.dart';
+import '../../stripe_payment/payment_manager.dart';
 import '../Home_page.dart';
 
 class PaymentMethod extends StatelessWidget {
@@ -91,10 +92,11 @@ class PaymentMethod extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: selected != null
-                        ? () {
+                        ? () async {
                       if (selected == "Credit or Debit Card") {
                         // Navigate to a credit card details screen or perform any action
                         // Add your custom implementation here for credit card payment
+                        await PaymentManager.makePayment(provider.cost as int, "EGP");
                         print("Credit card payment selected");
                       } else if (selected == "Cash") {
                         // Handle cash payment
