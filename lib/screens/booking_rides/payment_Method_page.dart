@@ -13,9 +13,10 @@ class PaymentMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<DriversProvider>(context, listen: false);
-    var providerAuth = Provider.of<AuthProvider>(context, listen: false);
-    double? totalCost = provider.cost;
+    // Get providers for cost and authentication
+    var driverProvider = Provider.of<DriversProvider>(context, listen: false);
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
+    double? totalCost = driverProvider.cost;
 
     return Scaffold(
       backgroundColor: const Color(0xff0e4f55),
@@ -38,9 +39,7 @@ class PaymentMethod extends StatelessWidget {
             const Text(
               "Select your preferred payment method",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             // Payment Options
@@ -52,9 +51,7 @@ class PaymentMethod extends StatelessWidget {
             const Text(
               "Enter Voucher Code (optional):",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                  color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -94,31 +91,46 @@ class PaymentMethod extends StatelessWidget {
                     onPressed: selected != null
                         ? () async {
                       if (selected == "Credit or Debit Card") {
-                        // Navigate to a credit card details screen or perform any action
-                        // Add your custom implementation here for credit card payment
-                        await PaymentManager.makePayment(provider.cost!, "EGP");
-                        print("Credit card payment selected");
+                        try {
+                          // Trigger Stripe payment using the driver's cost
+                          await PaymentManager.makePayment(totalCost!, "EGP");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Stripe Payment successful!"),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        } on PaymentCancelledException {
+                          // User cancelled the payment—do nothing.
+                          print("Payment cancelled by user.");
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Payment error: ${error.toString()}"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       } else if (selected == "Cash") {
-                        // Handle cash payment
-                        print("Cash payment selected");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Cash payment selected."),
+                            backgroundColor: Colors.blue,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
                       }
-
-                      // Show success message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                          Text("Payment method selected successfully!"),
-                          backgroundColor: Colors.green,
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-
-                      // Delay navigation slightly to allow snackbar display
+                      // After payment is handled, navigate to Homepage
                       Future.delayed(const Duration(milliseconds: 500), () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Homepage(userId: providerAuth.model!.id, isDisabled: providerAuth.model!.isDisabled,)),
+                            builder: (context) => Homepage(
+                              userId: authProvider.model!.id,
+                              isDisabled: authProvider.model!.isDisabled,
+                            ),
+                          ),
                         );
                       });
                     }

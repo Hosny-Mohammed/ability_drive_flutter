@@ -24,11 +24,11 @@ class Paymentpage extends StatelessWidget {
             // Add Payment Method
             TextButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethod(),
-                    ));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => PaymentMethod(),
+                //     ));
               },
               child: const Text(
                 'Add Payment Method',
