@@ -96,7 +96,7 @@ class PaymentMethod extends StatelessWidget {
                       if (selected == "Credit or Debit Card") {
                         // Navigate to a credit card details screen or perform any action
                         // Add your custom implementation here for credit card payment
-                        await PaymentManager.makePayment(provider.cost as int, "EGP");
+                        await PaymentManager.makePayment(provider.cost!, "EGP");
                         print("Credit card payment selected");
                       } else if (selected == "Cash") {
                         // Handle cash payment
