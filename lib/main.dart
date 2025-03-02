@@ -2,13 +2,18 @@ import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/providers/home_provider.dart';
 import 'package:ability_drive_flutter/providers/private_ride_provider.dart';
 import 'package:ability_drive_flutter/screens/Welcome_page.dart';
+import 'package:ability_drive_flutter/stripe_payment/stripe_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 import 'Driver/providers/auth_driver_provider.dart';
 import 'Driver/providers/home_driver_provider.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  Stripe.publishableKey=ApiKeys.publishableKey;
+  return runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
