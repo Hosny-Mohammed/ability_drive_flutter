@@ -183,6 +183,8 @@ class Homepage extends StatelessWidget {
                                                         'Available Seats For Disabled: ${bus["availableDisabledSeats"]}'),
                                                     Text(
                                                         'Wheelchair Accessible: ${bus["isWheelchairAccessible"] ? "Yes" : "No"}'),
+                                                    Text(
+                                                        'Price: ${bus["price"]} EGP'),
                                                   ],
                                                 ),
                                               ),
@@ -206,7 +208,7 @@ class Homepage extends StatelessWidget {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          PaymentMethod()),
+                                                          PaymentMethod(totalCost: bus["price"] * 1.00,)),
                                                 );
                                               }
                                             },

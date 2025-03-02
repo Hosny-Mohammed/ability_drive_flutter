@@ -6,7 +6,8 @@ import '../../stripe_payment/payment_manager.dart';
 import '../Home_page.dart';
 
 class PaymentMethod extends StatelessWidget {
-  PaymentMethod({Key? key}) : super(key: key);
+  double? totalCost;
+  PaymentMethod({Key? key,this.totalCost}) : super(key: key);
 
   final ValueNotifier<String?> _selectedPayment = ValueNotifier<String?>(null);
   final TextEditingController _voucherController = TextEditingController();
@@ -16,7 +17,10 @@ class PaymentMethod extends StatelessWidget {
     // Get providers for cost and authentication
     var driverProvider = Provider.of<DriversProvider>(context, listen: false);
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
-    double? totalCost = driverProvider.cost;
+
+    // If totalCost is not passed, assign the cost from driverProvider
+    totalCost ??= driverProvider.cost;
+
 
     return Scaffold(
       backgroundColor: const Color(0xff0e4f55),
