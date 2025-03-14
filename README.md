@@ -53,6 +53,7 @@ The project uses the following dependencies:
 - `dio`: For making HTTP requests.
 - `url_launcher`: For launching URLs.
 - `cupertino_icons`: iOS style icons.
+- `ability_drive_api`: API used in the application. [Ability Drive API Repository](https://github.com/Hosny-Mohammed/Ability-Drive-API)
 
 ## Code Style
 The project follows Dart best practices and uses the `flutter_lints` package for linting. Ensure to run `flutter analyze` before committing code to check for any linting issues.
