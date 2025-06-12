@@ -2,6 +2,7 @@ import 'package:ability_drive_flutter/Driver/screens/login_driver_screen.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ability_drive_flutter/screens/authentication/signup_page.dart';
+import '../../color_palette.dart';
 import '../../widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 import '../Home_page.dart';
@@ -19,7 +20,7 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff17494c),
+        backgroundColor: AppColors.background,
         actions: [
           TextButton(
             onPressed: () {
@@ -39,7 +40,7 @@ class LoginPage extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: const Color(0xff17494c),
+      backgroundColor: AppColors.background,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -88,7 +89,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 30),
                     shape: RoundedRectangleBorder(
@@ -118,7 +119,7 @@ class LoginPage extends StatelessWidget {
                     }
                   },
                   child: const Text('Login',
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(color: AppColors.background)),
                 ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 30),
@@ -152,21 +153,21 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ResetPass()),
-                    );
-                  },
-                  child: const Text(
-                    "Reset Password",
-                    style: TextStyle(
-                      color: Colors.lightBlue,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => ResetPass()),
+                //     );
+                //   },
+                //   child: const Text(
+                //     "Reset Password",
+                //     style: TextStyle(
+                //       color: Colors.lightBlue,
+                //       decoration: TextDecoration.underline,
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 40), // Adds spacing at the bottom
               ],
             ),

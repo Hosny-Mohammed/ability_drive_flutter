@@ -1,3 +1,4 @@
+import 'package:ability_drive_flutter/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'authentication/Login.dart';
 
@@ -5,7 +6,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: AppColors.background,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -14,13 +15,13 @@ class WelcomePage extends StatelessWidget {
               width: 200,
               height: 100,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.blue.shade300, Colors.blue.shade900],
-                ),
+                // gradient: LinearGradient(
+                //   begin: Alignment.topLeft,
+                //   end: Alignment.bottomRight,
+                //   colors: [Colors.blue.shade300, Colors.blue.shade900],
+                // ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
@@ -38,16 +39,16 @@ class WelcomePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.background,
                       ),
                     ),
                     SizedBox(height: 5),
                     Text(
                       'Drive',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.background,
                       ),
                     ),
                   ],
@@ -82,7 +83,7 @@ class WelcomePage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.indigo[900],
+                      color: AppColors.background,
                     ),
                   ),
                 ),

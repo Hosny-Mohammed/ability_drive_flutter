@@ -4,6 +4,7 @@ import 'package:ability_drive_flutter/screens/Home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../color_palette.dart';
 import '../providers/auth_driver_provider.dart';
 import 'home_driver_page.dart';
 
@@ -18,13 +19,13 @@ class LoginDriverScreen extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: const Color(0xff17494c),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
           "Login Driver",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xff17494c),
+        backgroundColor: AppColors.background,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -72,7 +73,7 @@ class LoginDriverScreen extends StatelessWidget {
               // Login Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -90,7 +91,7 @@ class LoginDriverScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(provider.loginSnackbar!);
                   }
                 },
-                child: const Text('Login', style: TextStyle(color: Colors.white)),
+                child: const Text('Login', style: TextStyle(color: AppColors.background)),
               ),
               const SizedBox(height: 30),
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ability_drive_flutter/Driver/models/driver_model.dart';
+import '../../color_palette.dart';
 import '../providers/home_driver_provider.dart';
 import '../widgets/ride_card.dart';
 
@@ -95,11 +96,13 @@ class _DriverHomePageState extends State<DriverHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Driver Dashboard'),
+        backgroundColor: AppColors.background,
+        title: const Text('Driver Dashboard', style: TextStyle(color: Colors.white),),
         actions: [
           IconButton(
-            icon: const Icon(Icons.location_on),
+            icon: const Icon(Icons.location_on, color: Colors.white,),
             onPressed: _showLocationUpdateSheet,
             tooltip: 'Update Location',
           )
@@ -127,7 +130,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
 
   Widget _buildAvailabilitySwitch(HomeDriverProvider provider) {
     return SwitchListTile(
-      title: const Text('Available for Rides'),
+      title: const Text('Available for Rides', style: TextStyle(color: Colors.white),),
       value: provider.availability,
       onChanged: (value) => provider.toggleAvailability(widget.driverId, value),
     );

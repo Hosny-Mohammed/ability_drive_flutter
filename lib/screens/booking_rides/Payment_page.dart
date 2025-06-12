@@ -2,13 +2,14 @@
 import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../color_palette.dart';
 import '../Home_page.dart';
 
 class Paymentpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3A42),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: const Color(0xFF121212),
         title: const Text(

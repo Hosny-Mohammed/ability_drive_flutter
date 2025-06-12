@@ -1,6 +1,7 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../color_palette.dart';
 import '../../providers/private_ride_provider.dart';
 import '../../stripe_payment/payment_manager.dart';
 import '../Home_page.dart';
@@ -23,7 +24,7 @@ class PaymentMethod extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: const Color(0xff0e4f55),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

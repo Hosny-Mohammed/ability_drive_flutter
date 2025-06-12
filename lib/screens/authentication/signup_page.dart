@@ -1,6 +1,7 @@
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../color_palette.dart';
 import '../../widgets/custom_text_field.dart';
 import '../Home_page.dart';
 
@@ -18,9 +19,9 @@ class RegistrationScreen extends StatelessWidget {
     var provider = Provider.of<AuthProvider>(context, listen: true);
 
     return Scaffold(
-      backgroundColor: const Color(0xff17494c),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xff17494c),
+        backgroundColor: AppColors.background,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -175,7 +176,7 @@ class RegistrationScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () async {
@@ -201,7 +202,7 @@ class RegistrationScreen extends StatelessWidget {
                     },
                     child: const Text(
                       'Next',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: AppColors.background, fontSize: 16),
                     ),
                   ),
                 ),

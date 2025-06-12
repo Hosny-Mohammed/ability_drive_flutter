@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
+import '../../color_palette.dart';
 import '../Rides_History/rides_page.dart';
 import '../Rides_History/seat_bookings_page.dart'; // Import your Credit Card page
 
@@ -10,9 +11,9 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3A42),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF121212),
+        backgroundColor: AppColors.background,
         title: const Text(
           'Menu',
           style: TextStyle(color: Colors.white),
@@ -39,7 +40,7 @@ class Profile extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF121212),
+                    color: AppColors.secondary ,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -59,30 +60,30 @@ class Profile extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: AppColors.background,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               user.phone,
-                              style: const TextStyle(color: Colors.white70),
+                              style: const TextStyle(color: AppColors.background),
                             ),
                             Text(
                               user.email,
-                              style: const TextStyle(color: Colors.white70),
+                              style: const TextStyle(color: AppColors.background),
                             ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
                                 const Text(
                                   'Status: ',
-                                  style: TextStyle(color: Colors.white70),
+                                  style: TextStyle(color: AppColors.background),
                                 ),
                                 Text(
                                   user.isDisabled ? "Disabled" : "Active",
                                   style: TextStyle(
                                     color: user.isDisabled
-                                        ? Colors.red
+                                        ? Colors.blue
                                         : Colors.green,
                                     fontWeight: FontWeight.bold,
                                   ),

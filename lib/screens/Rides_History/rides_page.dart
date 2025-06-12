@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ability_drive_flutter/providers/auth_provider.dart';
 
+import '../../color_palette.dart';
+
 class RidesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3A42),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF121212),
+        backgroundColor: AppColors.background,
         title: const Text(
           'Rides',
           style: TextStyle(color: Colors.white),
@@ -33,16 +35,16 @@ class RidesPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final ride = rides[index];
               return Card(
-                color: const Color(0xFF121212),
+                color:  Colors.white,
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   title: Text(
                     '${ride.pickupLocation} → ${ride.destination}',
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: AppColors.background),
                   ),
                   subtitle: Text(
                     'Cost: \$${ride.cost}',
-                    style: const TextStyle(color: Colors.white70),
+                    style: const TextStyle(color: AppColors.background),
                   ),
                   trailing: Text(
                     ride.status,

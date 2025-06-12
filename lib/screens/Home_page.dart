@@ -1,3 +1,4 @@
+import 'package:ability_drive_flutter/color_palette.dart';
 import 'package:ability_drive_flutter/providers/home_provider.dart';
 import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
 import 'package:ability_drive_flutter/screens/booking_rides/private_Book.dart';
@@ -18,9 +19,9 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = Provider.of<HomeProvider>((context), listen: false);
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3A42),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A3A42),
+        backgroundColor: AppColors.background,
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -45,30 +46,30 @@ class Homepage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    color: const Color(0xFF5B6EF8),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'To find your pickup location automatically, turn on location services',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text('Turn on location'),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   color: const Color(0xFF5B6EF8),
+                  //   padding: const EdgeInsets.all(16),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text(
+                  //         'To find your pickup location automatically, turn on location services',
+                  //         style: TextStyle(color: Colors.white, fontSize: 16),
+                  //       ),
+                  //       const SizedBox(height: 10),
+                  //       ElevatedButton(
+                  //         onPressed: () {},
+                  //         style: ElevatedButton.styleFrom(
+                  //           backgroundColor: Colors.black,
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(8),
+                  //           ),
+                  //         ),
+                  //         child: const Text('Turn on location'),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -152,6 +153,7 @@ class Homepage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final bus = homeProvider.filteredBuses[index];
                               return Card(
+                                color: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -173,18 +175,18 @@ class Homepage extends StatelessWidget {
                                                   children: [
                                                     Text(
                                                       'Bus Number: ${bus["busNumber"]}',
-                                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.background),
                                                     ),
-                                                    Text('From: ${bus["fromLocation"]}'),
-                                                    Text('To: ${bus["toLocation"]}'),
-                                                    Text('Departure: ${bus["departureTime"]}'),
-                                                    Text('Available Seats: ${bus["availableNormalSeats"]}'),
+                                                    Text('From: ${bus["fromLocation"]}', style: const TextStyle(color: AppColors.background),),
+                                                    Text('To: ${bus["toLocation"]}', style: const TextStyle(color: AppColors.background),),
+                                                    Text('Departure: ${bus["departureTime"]}', style: const TextStyle(color: AppColors.background),),
+                                                    Text('Available Seats: ${bus["availableNormalSeats"]}', style: const TextStyle(color: AppColors.background),),
                                                     Text(
-                                                        'Available Seats For Disabled: ${bus["availableDisabledSeats"]}'),
+                                                        'Available Seats For Disabled: ${bus["availableDisabledSeats"]}', style: const TextStyle(color: AppColors.background),),
                                                     Text(
-                                                        'Wheelchair Accessible: ${bus["isWheelchairAccessible"] ? "Yes" : "No"}'),
+                                                        'Wheelchair Accessible: ${bus["isWheelchairAccessible"] ? "Yes" : "No"}', style: const TextStyle(color: AppColors.background),),
                                                     Text(
-                                                        'Price: ${bus["price"]} EGP'),
+                                                        'Price: ${bus["price"]} EGP', style: const TextStyle(color: Colors.green),),
                                                   ],
                                                 ),
                                               ),

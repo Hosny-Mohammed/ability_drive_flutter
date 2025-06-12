@@ -2,6 +2,7 @@ import 'package:ability_drive_flutter/providers/auth_provider.dart';
 import 'package:ability_drive_flutter/screens/booking_rides/payment_Method_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../color_palette.dart';
 import '../../providers/private_ride_provider.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/driver_card.dart';
@@ -52,14 +53,14 @@ class _PrivateBookState extends State<PrivateBook> {
     var driverProvider = Provider.of<DriversProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF183446),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF183446),
+        backgroundColor: AppColors.background,
         elevation: 0,
-        title: const Text("Private Ride"),
+        title: const Text("Private Ride", style: TextStyle(color: Colors.white),),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh, color: Colors.white,),
             onPressed: () {
               if (pickupController.text.isNotEmpty &&
                   destinationController.text.isNotEmpty) {
