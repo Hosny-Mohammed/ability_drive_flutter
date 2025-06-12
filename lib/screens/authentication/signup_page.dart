@@ -55,6 +55,7 @@ class RegistrationScreen extends StatelessWidget {
                             'https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/egypt-flag-icon.png',
                             width: 24,
                             height: 45,
+                            errorBuilder: (context, error, stackTrace) => const Placeholder(),
                           ),
                           const SizedBox(width: 8),
                           const Text(
